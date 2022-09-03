@@ -177,7 +177,7 @@ with torch.no_grad():
         for y in test_pred.cpu().numpy():
             predict.append(y)
 
-with open('data/ml2021spring-hw2/prediction.csv', 'w') as f:
+with open('output/ml2021spring-hw2/prediction.csv', 'w') as f:
     f.write('Id,Class\n')
     for i, y in enumerate(predict):
         f.write('{},{}\n'.format(i, y))

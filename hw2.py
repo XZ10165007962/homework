@@ -18,7 +18,7 @@ import torch.nn as nn
 
 print("Loading data.....")
 
-data_root = "/Users/xinzhuang/Documents/ml2021spring-hw2/timit_11/timit_11"
+data_root = "data/ml2021spring-hw2/timit_11/timit_11"
 train = np.load(data_root + "/train_11.npy")
 train_label = np.load(data_root + "/train_label_11.npy")
 test = np.load(data_root + "/test_11.npy")
@@ -102,7 +102,7 @@ device = torch.device(device)
 num_epoch = 20
 learning_rate = 0.0001
 
-model_path = "/Users/xinzhuang/Documents/ml2021spring-hw2/model.ckpt"
+model_path = "output/ml2021spring-hw2/model.ckpt"
 
 model = Classifier().to(device)
 criterion = nn.CrossEntropyLoss()
@@ -177,7 +177,7 @@ with torch.no_grad():
         for y in test_pred.cpu().numpy():
             predict.append(y)
 
-with open('/Users/xinzhuang/Documents/ml2021spring-hw2/prediction.csv', 'w') as f:
+with open('data/ml2021spring-hw2/prediction.csv', 'w') as f:
     f.write('Id,Class\n')
     for i, y in enumerate(predict):
         f.write('{},{}\n'.format(i, y))

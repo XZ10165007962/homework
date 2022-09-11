@@ -127,3 +127,33 @@ for epoch in range(n_epochs):
     train_loss = sum(train_loss) / len(train_loss)
     train_acc = sum(train_acc) / len(train_acc)
     print(f"[ Train | {epoch + 1:03d}/{n_epochs:03d} ] loss = {train_loss:.5f}, acc = {train_acc:.5f}")
+
+    model.eval()
+    valid_loss = []
+    valid_accs = []
+
+    for batch in tqdm(valid_loader):
+        imgs, labels = batch
+        with torch.no_grad:
+            logits = model(imgs.to(device))
+        loss = criterion(logits, labels.to(device))
+        acc = (logits.argmax(dim=-1) == labels.to(device)).float().mean()
+
+        valid_loss.append(loss.item())
+        valid_accs.append(acc)
+    valid_loss = sum(valid_loss) / len(valid_loss)
+    valid_accs = sum(valid_accs) / len(valid_accs)
+    print(f"[ Train | {epoch + 1:03d}/{n_epochs:03d} ] loss = {train_loss:.5f}, acc = {train_acc:.5f}")
+
+    model.eval()
+    predictions = []
+    for batch in tqdm(test_loader):
+        imgs, labels = batch
+        with torch.no_grad:
+            logits = model(imgs.to(device))
+        predictions.extend(logits.argmax(dim=-1).cpu().numpy.tolist())
+
+    with open("output/ml2021sprint-hw3/predict.csv", "w") as f:
+        f.write("Id,Category\n")
+        for i, pred in enumerate(predictions):
+            f.write(f"{i},{pred}\n")
